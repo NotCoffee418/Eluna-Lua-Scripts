@@ -10,10 +10,13 @@ local CHEST = {}
 -- set chest gameobject ID's at bottom
 local HOURS = 24 			-- How many hours before a player can loot again 
 local ACCOUNTLIMIT = true 	-- TRUE: Limits entire account. FALSE: Limits only this character
+-- Message to show when player already looted a chest recently
+local ALREADYLOOTED = "You already looted this chest. Please check back within 24 hours."
 -- GameObject ID's you want to limit per player.
 CHEST[1] = 500000
 CHEST[2] = 500001
 CHEST[3] = 500002
+
 
 -- Functions
 local function registerNewLoot(pid, goGuid)
@@ -37,7 +40,7 @@ end
 
 local function blockLoot(player, go)
 	go:SetLootState(3)
-	player:SendBroadcastMessage("You already looted this chest recently.");
+	player:SendBroadcastMessage(ALREADYLOOTED);
 end
 
 local function handleLoot(player, go)
