@@ -99,6 +99,7 @@ end
  
 local function startFlight(player, flight)
     -- check if player can afford cost
+    if ((not flight.cost or player:GetCoinage() >= flight.cost) and (not flight.token or player:GetItemCount(flight.token) >= (flight.token_count or 0))) then
         if (flight.cost) then
             player:ModifyMoney(-flight.cost)
         end
