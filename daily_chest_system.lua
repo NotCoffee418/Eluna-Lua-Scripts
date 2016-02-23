@@ -3,19 +3,18 @@
 -- Usage:	Modify the configuration below to suit your needs.
 -- Website: https://github.com/RStijn
 
--- Init
-local CHEST = {} 
-
 -- Config
+local CHEST = {
+	-- GameObject ID's you want to limit per player.
+	500000,
+	500001,
+	500002,
+} 
 -- set chest gameobject ID's at bottom
 local HOURS = 24 			-- How many hours before a player can loot again 
 local ACCOUNTLIMIT = true 	-- TRUE: Limits entire account. FALSE: Limits only this character
 -- Message to show when player already looted a chest recently
 local ALREADYLOOTED = "You already looted this chest. Please check back within 24 hours."
--- GameObject ID's you want to limit per player.
-CHEST[1] = 500000
-CHEST[2] = 500001
-CHEST[3] = 500002
 
 
 -- Functions
@@ -63,17 +62,16 @@ end
 
 local function onLootStateChanged(event, go, state)
 	if state == 2 then
-		player = go:GetLootRecipient()
-		handleLoot(player, go)
+		local player = go:GetLootRecipient()
+		if player then
+			handleLoot(player, go)
+		end
 	end
-
 end
 
 -- Register chests
-local i = 1
-while CHEST[i] do
-  RegisterGameObjectEvent(CHEST[i], 9, onLootStateChanged)
-  i = i + 1
+for k, chest_entry in ipairs(CHEST) do
+  RegisterGameObjectEvent(chest_entry, 9, onLootStateChanged)
 end
 
 -- Create sql table if needed
